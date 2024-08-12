@@ -1,0 +1,1132 @@
+------Shift cipher-----------
+
+#include<stdio.h>
+#include<string.h>
+int main(){
+    char pt[50],ct[50];
+    int k,i;
+    printf("Enter plain text (small) \n");
+    gets(pt);
+    printf("Enter key ");
+    scanf("%d",&k);
+    printf("\n --------Encrpytion-------\n");
+    puts(pt);
+    for(i=0;i<strlen(pt);i++){
+        if(pt[i]==' '){
+            ct[i]=' ';
+            continue;
+        }
+        ct[i]=(((pt[i]+k)-97)%26)+65;
+    }
+    ct[i]='\0';
+    printf("Cipher text\n");
+    puts(ct);
+    printf("\n --------Decrpytion-------\n");
+    printf("Cipher text\n");
+    puts(ct);
+    printf("\n Key \n ");
+    printf("%d",k);
+    for(i=0;i<strlen(ct);i++){
+        if(ct[i]==' '){
+            pt[i]=' ';
+            continue;
+        }
+        pt[i]=(((ct[i]-65+26)-k)%26)+97;
+    }
+    pt[i]=' ';
+    printf("\n Plain text = ");
+    puts(pt);
+
+}
+
+-----vermin cipher----------------
+
+#include<stdio.h>
+#include<string.h>
+int main(){
+    char pt[50],ct[50],kt[50],st[20];
+    int k,i;
+    printf("Enter plain text (small) \n");
+    gets(pt);
+    printf("Enter key ");
+    gets(st);
+    strcpy(kt,st);
+    while(strlen(pt)>strlen(kt)){
+        strcat(kt,st);
+    }
+    puts(st);
+    printf("\n --------Encrpytion-------\n");
+    puts(pt);
+    for(i=0;i<strlen(pt);i++){
+        if(pt[i]==' '){
+            ct[i]=' ';
+            continue;
+        }
+        int a=(((pt[i]-97))%26)+65;
+        int b=(((kt[i]-97))%26)+65;
+        ct[i]=((a+b)%26)+65;
+    }
+    ct[i]='\0';
+    printf("Cipher text\n");
+    puts(ct);
+    printf("\n --------Decrpytion-------\n");
+    printf("Cipher text\n");
+    puts(ct);
+    printf("\n Key \n ");
+    puts(st);
+    for(i=0;i<strlen(ct);i++){
+        if(ct[i]==' '){
+            pt[i]=' ';
+            continue;
+        }
+        pt[i]=(((ct[i]-65)-(kt[i]-97)+26)%26)+97;
+    }
+    pt[i]=' ';
+    printf("\n Plain text = ");
+    puts(pt);
+
+
+
+}
+
+-------otp cipher-----------
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+int main(){
+    char pt[50],ct[50],kt[50],st[20];
+    int k,i=0;
+    printf("Enter plain text (small) \n");
+    gets(pt);
+    printf("Generated key: ");
+    while(strlen(pt)>strlen(kt)){
+        kt[i++]=97+((rand()+i)%26);
+    }
+    kt[i++]='\0';
+    strcpy(st,kt);
+    puts(st);
+    printf("\n --------Encrpytion-------\n");
+    puts(pt);
+    for(i=0;i<strlen(pt);i++){
+        if(pt[i]==' '){
+            ct[i]=' ';
+            continue;
+        }
+        int a=(((pt[i]-97))%26)+65;
+        int b=(((kt[i]-97))%26)+65;
+        ct[i]=((a+b)%26)+65;
+    }
+    ct[i]='\0';
+    printf("Cipher text\n");
+    puts(ct);
+    printf("\n --------Decrpytion-------\n");
+    printf("Cipher text\n");
+    puts(ct);
+    printf("\n Key \n ");
+    puts(st);
+    for(i=0;i<strlen(ct);i++){
+        if(ct[i]==' '){
+            pt[i]=' ';
+            continue;
+        }
+        pt[i]=(((ct[i]-65)-(kt[i]-97)+26)%26)+97;
+    }
+    pt[i]='\0';
+    printf("\n Plain text = ");
+    puts(pt);
+
+
+
+}
+
+-------hill cipher 2--------
+#include<stdio.h>
+#include<string.h>
+int main(){
+    char pt[50],ct[50];
+    int key[2][2];
+    int i,j,k;
+    printf("Enter plaintext\n");
+    scanf("%s",&pt);
+    printf("\nEnter the key values\n");
+    for(i=0;i<2;i++){
+        for(j=0;j<2;j++){
+            scanf("%d",&key[i][j]);
+        }
+    }
+    if(strlen(pt)%2!=0){
+        int l=strlen(pt);
+        pt[l]='x';
+        pt[l+1]='\0';
+        }
+    printf("\n-----Encryption---------\n");
+    for(i=0;i<strlen(pt);i=i+2){
+        int p1=(pt[i]-97);
+        int p2=(pt[i+1]-97);
+        ct[i]=(key[0][0]*p1+key[0][1]*p2)%26+65;
+        ct[i+1]=(key[1][0]*p1+key[1][1]*p2)%26+65;
+    }
+    ct[i]='\0';
+    printf("\n-----DEncrypted---------\n");
+    printf("%s",ct);
+    int det=key[0][0]*key[1][1]-key[0][1]*key[1][0];
+    int x=1;
+    while(((x*det)%26)!=1){
+        x++;
+    }
+    int adj[2][2];
+    adj[0][0]=key[1][1];
+    adj[1][1]=key[0][0];
+    adj[0][1]=-key[0][1];
+    adj[1][0]=-key[1][0];
+    for(i=0;i<2;i++){
+        for(j=0;j<2;j++){
+            key[i][j]=((x* adj[i][j])+26)%26;
+        }
+    }
+    printf("\n-----Encryption---------\n");
+    for(i=0;i<strlen(pt);i=i+2){
+        int p1=(ct[i]-65);
+        int p2=(ct[i+1]-65);
+        pt[i]=(key[0][0]*p1+key[0][1]*p2)%26+97;
+        pt[i+1]=(key[1][0]*p1+key[1][1]*p2)%26+97;
+    }
+    pt[i]='\0';
+    printf("\n-----DEncrypted---------\n");
+    printf("%s",pt);
+    
+}
+
+
+-------hill cipher 3------------
+#include<stdio.h>
+#include<string.h>
+int main(){
+    char pt[50],ct[50];
+    int key[3][3],key_inv[3][3];
+    int i,j,k;
+    printf("Enter plaintext\n");
+    scanf("%s",pt);
+    printf("\nEnter the key values\n");
+    for(i=0;i<3;i++){
+        for(j=0;j<3;j++){
+            scanf("%d",&key[i][j]);
+        }
+    }
+    printf("\nEnter the inverse key values\n");
+    for(i=0;i<3;i++){
+        for(j=0;j<3;j++){
+            scanf("%d",&key_inv[i][j]);
+        }
+    }
+    if(strlen(pt)%3!=0){
+        int l=strlen(pt);
+        pt[l]='x';
+        pt[l+1]='\0';
+        }
+    printf("\n-----Encryption---------\n");
+    for(i=0;i<strlen(pt);i=i+3){
+        int p1=(pt[i]-97);
+        int p2=(pt[i+1]-97);
+        int p3=(pt[i+2]-97);
+        ct[i]=(key[0][0]*p1+key[0][1]*p2+key[0][2]*p3)%26+65;
+        ct[i+1]=(key[1][0]*p1+key[1][1]*p2+key[1][2]*p3)%26+65;
+        ct[i+2]=(key[2][0]*p1+key[2][1]*p2+key[2][2]*p3)%26+65;
+    }
+    ct[i]='\0';
+    printf("\n-----Encrypted---------\n");
+    printf("%s",ct);
+    printf("\n-----Decryption---------\n");
+    for(i=0;i<strlen(pt);i=i+3){
+        int p1=(ct[i]-65);
+        int p2=(ct[i+1]-65);
+        int p3=(ct[i+2]-65);
+        pt[i]=(key_inv[0][0]*p1+key_inv[0][1]*p2+key_inv[0][2]*p3)%26+97;
+        pt[i+1]=(key_inv[1][0]*p1+key_inv[1][1]*p2+key_inv[1][2]*p3)%26+97;
+        pt[i+2]=(key_inv[2][0]*p1+key_inv[2][1]*p2+key_inv[2][2]*p3)%26+97;
+    }
+    pt[i]='\0';
+    printf("\n-----Decrypted---------\n");
+    printf("%s",pt);
+    
+}
+
+
+
+
+------railfence cipher-------
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char pt[50], ct[50], dt[50];
+    int d;
+    printf("Enter plaintext: ");
+    scanf("%s", pt);
+    printf("Enter Depth: ");
+    scanf("%d", &d);
+
+    int n = strlen(pt);
+    char rail[d][n];
+
+    // Initializing the rail matrix with '\n' to indicate empty cells
+    for (int i = 0; i < d; i++)
+        for (int j = 0; j < n; j++)
+            rail[i][j] = '\n';
+
+    // Fill the rail matrix with characters of the plaintext
+    int row = 0, col = 0;
+    int direction = 1; // 1 for down and -1 for up
+
+    for (int i = 0; i < n; i++) {
+        rail[row][col++] = pt[i];
+        
+        if (row == 0)
+            direction = 1;
+        else if (row == d - 1)
+            direction = -1;
+
+        row += direction;
+    }
+
+    // Construct the cipher text from the rail matrix
+    int k = 0;
+    for (int i = 0; i < d; i++)
+        for (int j = 0; j < n; j++)
+            if (rail[i][j] != '\n')
+                ct[k++] = rail[i][j];
+    
+    ct[k] = '\0';
+    
+    printf("Encrypted text: %s\n", ct);
+
+    // Decryption
+    // Initialize the rail matrix for decryption
+    for (int i = 0; i < d; i++)
+        for (int j = 0; j < n; j++)
+            rail[i][j] = '\n';
+
+    // Mark the positions where characters will be placed
+    row = 0, col = 0;
+    direction = 1;
+
+    for (int i = 0; i < n; i++) {
+        rail[row][col++] = '*';
+
+        if (row == 0)
+            direction = 1;
+        else if (row == d - 1)
+            direction = -1;
+
+        row += direction;
+    }
+
+    // Fill the rail matrix with cipher text characters
+    k = 0;
+    for (int i = 0; i < d; i++)
+        for (int j = 0; j < n; j++)
+            if (rail[i][j] == '*')
+                rail[i][j] = ct[k++];
+
+    // Construct the decrypted text from the rail matrix
+    row = 0, col = 0;
+    direction = 1;
+
+    for (int i = 0; i < n; i++) {
+        dt[i] = rail[row][col++];
+
+        if (row == 0)
+            direction = 1;
+        else if (row == d - 1)
+            direction = -1;
+
+        row += direction;
+    }
+
+    dt[n] = '\0';
+
+    printf("Decrypted text: %s\n", dt);
+
+    return 0;
+}
+
+------playfair cipher-------
+
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+int main() {
+    char pt[50], key[50], skey[25] = {0}; // skey for 25 characters
+    char mat[5][5];
+    char alpha[] = "abcdefghiklmnopqrstuvwxyz"; // 'j' is omitted
+    int k = 0, i, j;
+
+    // Input plaintext and key
+    printf("Enter plaintext: ");
+    scanf("%s", pt);
+    printf("Enter key: ");
+    scanf("%s", key);
+
+    // Convert key to lowercase and replace 'j' with 'i'
+    for (i = 0; key[i]; i++) {
+        key[i] = tolower(key[i]);
+        if (key[i] == 'j') key[i] = 'i';
+    }
+
+    // Add key characters to skey and ensure no repetition
+    for (i = 0; key[i] != '\0'; i++) {
+        if (strchr(skey, key[i]) == NULL) {
+            skey[k++] = key[i];
+        }
+    }
+
+    // Add remaining alphabet characters to skey
+    for (i = 0; i < 25; i++) { // Only loop till 25 for 5x5 matrix
+        if (strchr(skey, alpha[i]) == NULL) {
+            skey[k++] = alpha[i];
+        }
+    }
+    skey[k] = '\0';
+
+    // Fill the 5x5 matrix with characters from skey
+    k = 0;
+    for (i = 0; i < 5; i++) {
+        for (j = 0; j < 5; j++) {
+            mat[i][j] = skey[k++];
+        }
+    }
+
+    // Print the 5x5 matrix
+    printf("Key Matrix:\n");
+    for (i = 0; i < 5; i++) {
+        for (j = 0; j < 5; j++) {
+            printf("%c ", mat[i][j]);
+        }
+        printf("\n");
+    }
+
+    // Format plaintext
+    int len = strlen(pt);
+    for (i = 0; i < len; i++) {
+        pt[i] = tolower(pt[i]);
+        if (pt[i] == 'j') pt[i] = 'i';
+    }
+
+    // Handle repeated characters and ensure length is even
+    char formatted[50] = {0};
+    int f_index = 0;
+    for (i = 0; i < len; i++) {
+        formatted[f_index++] = pt[i];
+        if (i < len - 1 && pt[i] == pt[i + 1]) {
+            formatted[f_index++] = 'x'; // Insert 'x' to handle repeated characters
+        }
+    }
+    if (f_index % 2 != 0) {
+        formatted[f_index++] = 'x'; // Ensure even length
+    }
+    formatted[f_index] = '\0';
+
+    // Encryption
+    char encrypted[50] = {0};
+    len = strlen(formatted);
+    for (i = 0; i < len; i += 2) {
+        int r1, c1, r2, c2;
+        // Find positions of the characters
+        for (r1 = 0; r1 < 5; r1++) {
+            for (c1 = 0; c1 < 5; c1++) {
+                if (mat[r1][c1] == formatted[i]) break;
+            }
+            if (c1 < 5) break;
+        }
+        for (r2 = 0; r2 < 5; r2++) {
+            for (c2 = 0; c2 < 5; c2++) {
+                if (mat[r2][c2] == formatted[i + 1]) break;
+            }
+            if (c2 < 5) break;
+        }
+
+        // Encryption logic
+        if (r1 == r2) { // Same row
+            encrypted[i] = mat[r1][(c1 + 1) % 5];
+            encrypted[i + 1] = mat[r2][(c2 + 1) % 5];
+        } else if (c1 == c2) { // Same column
+            encrypted[i] = mat[(r1 + 1) % 5][c1];
+            encrypted[i + 1] = mat[(r2 + 1) % 5][c2];
+        } else { // Rectangle
+            encrypted[i] = mat[r1][c2];
+            encrypted[i + 1] = mat[r2][c1];
+        }
+    }
+    encrypted[len] = '\0';
+
+    printf("Encrypted text: %s\n", encrypted);
+
+    // Decryption
+    char decrypted[50] = {0};
+    for (i = 0; i < len; i += 2) {
+        int r1, c1, r2, c2;
+        // Find positions of the characters
+        for (r1 = 0; r1 < 5; r1++) {
+            for (c1 = 0; c1 < 5; c1++) {
+                if (mat[r1][c1] == encrypted[i]) break;
+            }
+            if (c1 < 5) break;
+        }
+        for (r2 = 0; r2 < 5; r2++) {
+            for (c2 = 0; c2 < 5; c2++) {
+                if (mat[r2][c2] == encrypted[i + 1]) break;
+            }
+            if (c2 < 5) break;
+        }
+
+        // Decryption logic
+        if (r1 == r2) { // Same row
+            decrypted[i] = mat[r1][(c1 + 4) % 5]; // Move left
+            decrypted[i + 1] = mat[r2][(c2 + 4) % 5];
+        } else if (c1 == c2) { // Same column
+            decrypted[i] = mat[(r1 + 4) % 5][c1]; // Move up
+            decrypted[i + 1] = mat[(r2 + 4) % 5][c2];
+        } else { // Rectangle
+            decrypted[i] = mat[r1][c2];
+            decrypted[i + 1] = mat[r2][c1];
+        }
+    }
+    decrypted[len] = '\0';
+
+    printf("Decrypted text: %s\n", decrypted);
+
+    return 0;
+}
+
+-----Implementation of des----------
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+    char k1[65] = "1101101010110100100110011101111000101010001010011011101010101111";
+    int k[64];
+    int pc1[56], pc2[56], c[28], d[28], key[16][48];
+    int i, r, m;
+
+    int pc1l[28] = {57, 49, 41, 33, 25, 17, 9, 1, 58, 50, 42, 34, 26, 18,
+                    10, 2, 59, 51, 43, 35, 27, 19, 11, 3, 60, 52, 44, 36};
+    int pc1r[28] = {63, 55, 47, 39, 31, 23, 15, 7, 62, 54, 46, 38, 30, 22,
+                    14, 6, 61, 53, 45, 37, 29, 21, 13, 5, 28, 20, 12, 4};
+    int pc22[48] = {14, 17, 11, 24, 1, 5, 3, 28, 15, 6, 21, 10, 23, 19, 12, 4, 26, 8,
+                    16, 7, 27, 20, 13, 2, 41, 52, 31, 37, 47, 55, 30, 40, 51, 45, 33, 48,
+                    44, 49, 39, 56, 34, 53, 46, 42, 50, 36, 29, 32};
+
+    // Convert k1 to integer array k
+    for (i = 0; i < 64; i++) {
+        k[i] = k1[i] - '0';  // Convert char '0' or '1' to int 0 or 1
+    }
+
+    // Apply PC-1 permutation
+    for (i = 0; i < 28; i++) {
+        pc1[i] = k[pc1l[i] - 1];
+    }
+    for (i = 0; i < 28; i++) {
+        pc1[28 + i] = k[pc1r[i] - 1];
+    }
+
+    // Split PC-1 into C and D
+    for (i = 0; i < 28; i++) {
+        c[i] = pc1[i];
+        d[i] = pc1[28 + i];
+    }
+
+    // Key schedule generation
+    for (r = 0; r < 16; r++) {
+        printf("\nRound %d\n", r + 1);
+
+        // Perform key shifting
+        if (r == 0 || r == 1 || r == 8 || r == 15) {
+            // Shift C and D by 1
+            int ctemp = c[0];
+            int dtemp = d[0];
+            memmove(c, c + 1, 27 * sizeof(int));
+            memmove(d, d + 1, 27 * sizeof(int));
+            c[27] = ctemp;
+            d[27] = dtemp;
+        } else {
+            // Shift C and D by 2
+            int ctemp1 = c[0];
+            int ctemp2 = c[1];
+            int dtemp1 = d[0];
+            int dtemp2 = d[1];
+            memmove(c, c + 2, 26 * sizeof(int));
+            memmove(d, d + 2, 26 * sizeof(int));
+            c[26] = ctemp1;
+            c[27] = ctemp2;
+            d[26] = dtemp1;
+            d[27] = dtemp2;
+        }
+
+        // Combine C and D
+        for (i = 0; i < 28; i++) {
+            pc2[i] = c[i];
+            pc2[28 + i] = d[i];
+        }
+
+        // Generate round key using PC-2 permutation
+        printf("Combined key (length %d bits): ", 56);
+        for (i = 0; i < 56; i++) {
+            printf("%d", pc2[i]);
+        }
+        printf("\n");
+
+        printf("Round key (length %d bits): ", 48);
+        for (i = 0; i < 48; i++) {
+            key[r][i] = pc2[pc22[i] - 1];
+            printf("%d", key[r][i]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
+
+
+-----Implementation of s-box--------
+#include <stdio.h>
+#include<string.h>
+#include<stdlib.h>
+int main() {
+    // Define an S-box (example S-box 1 from DES)
+    int s1[8][4][16] = {
+    {
+        {14, 4, 13, 1, 2, 15, 11, 8, 3, 10, 6, 12, 5, 9, 0, 7},
+        {0, 15, 7, 4, 14, 2, 13, 1, 10, 6, 12, 11, 9, 5, 3, 8},
+        {4, 1, 14, 8, 13, 6, 2, 11, 15, 12, 9, 7, 3, 10, 5, 0},
+        {15, 12, 8, 2, 4, 9, 1, 7, 5, 11, 3, 14, 10, 0, 6, 13}
+    },
+    {
+        {15, 1, 8, 14, 6, 11, 3, 4, 9, 7, 2, 13, 12, 0, 5, 10},
+        {3, 13, 4, 7, 15, 2, 8, 14, 12, 0, 1, 10, 6, 9, 11, 5},
+        {0, 14, 7, 11, 10, 4, 13, 1, 5, 8, 12, 6, 9, 3, 2, 15},
+        {13, 8, 10, 1, 3, 15, 4, 2, 11, 6, 7, 12, 0, 5, 14, 9}
+    },
+    {
+        {10, 0, 9, 14, 6, 3, 15, 5, 1, 13, 12, 7, 11, 4, 2, 8},
+        {13, 7, 0, 9, 3, 4, 6, 10, 2, 8, 5, 14, 12, 11, 15, 1},
+        {13, 6, 4, 9, 8, 15, 3, 0, 11, 1, 2, 12, 5, 10, 14, 7},
+        {1, 10, 13, 0, 6, 9, 8, 7, 4, 15, 14, 3, 11, 5, 2, 12}
+    },
+    {
+        {7, 13, 14, 3, 0, 6, 9, 10, 1, 2, 8, 5, 11, 12, 4, 15},
+        {13, 8, 11, 5, 6, 15, 0, 3, 4, 7, 2, 12, 1, 10, 14, 9},
+        {10, 6, 9, 0, 12, 11, 7, 13, 15, 1, 3, 14, 5, 2, 8, 4},
+        {3, 15, 0, 6, 10, 1, 13, 8, 9, 4, 5, 11, 12, 7, 2, 14}
+    },
+    {
+        {2, 12, 4, 1, 7, 10, 11, 6, 8, 5, 3, 15, 13, 0, 14, 9},
+        {14, 11, 2, 12, 4, 7, 13, 1, 5, 0, 15, 10, 3, 9, 8, 6},
+        {4, 2, 1, 11, 10, 13, 7, 8, 15, 9, 12, 5, 6, 3, 0, 14},
+        {11, 8, 12, 7, 1, 14, 2, 13, 6, 15, 0, 9, 10, 4, 5, 3}
+    },
+    {
+        {12, 1, 10, 15, 9, 2, 6, 8, 0, 13, 3, 4, 14, 7, 5, 11},
+        {10, 15, 4, 2, 7, 12, 9, 5, 6, 1, 13, 14, 0, 11, 3, 8},
+        {9, 14, 15, 5, 2, 8, 12, 3, 7, 0, 4, 10, 1, 13, 11, 6},
+        {4, 3, 2, 12, 9, 5, 15, 10, 11, 14, 1, 7, 6, 0, 8, 13}
+    },
+    {
+        {4, 11, 2, 14, 15, 0, 8, 13, 3, 12, 9, 7, 5, 10, 6, 1},
+        {13, 0, 11, 7, 4, 9, 1, 10, 14, 3, 5, 12, 2, 15, 8, 6},
+        {1, 4, 11, 13, 12, 3, 7, 14, 10, 15, 6, 8, 0, 5, 9, 2},
+        {6, 11, 13, 8, 1, 4, 10, 7, 9, 5, 0, 15, 14, 2, 3, 12}
+    },
+    {
+        {13, 2, 8, 4, 6, 15, 11, 1, 10, 9, 3, 14, 5, 0, 12, 7},
+        {1, 15, 13, 8, 10, 3, 7, 4, 12, 5, 6, 11, 0, 14, 9, 2},
+        {7, 11, 4, 1, 9, 12, 14, 2, 0, 6, 10, 13, 15, 3, 5, 8},
+        {2, 1, 14, 7, 4, 10, 8, 13, 15, 12, 9, 0, 3, 5, 6, 11}
+    }
+};
+    char val[100];
+    char input[10];
+    int k=0,j=0;
+    strcpy(val,"1010111111010101010010010101010101010101010101001100101");
+    printf("Input is \n");
+    puts(val);
+    for(int q=0;q<8;q++){
+        for( j=0;j<6;j++){
+            input[j]=val[k];
+            k++;
+        }
+    input[j]='\0';
+    printf("Input %s \n",input);
+    char temp_row[3];
+    char temp_col[5];
+      int a=0, b=0;
+  for(int i=0;i<6;i++){
+      if(i==0||i==5){
+          temp_row[a]=input[i];
+          a++;
+      }
+      else{
+          temp_col[b]=input[i];
+          b++;
+      }
+     }
+     temp_row[a]='\0';
+     temp_col[b]='\0';
+   // printf("\n row-%d col-%d \n",strtol(temp_row,NULL,2),strtol(temp_col,NULL,2));
+    int row=strtol(temp_row,NULL,2);
+    int col=strtol(temp_col,NULL,2);
+    int output=s1[q][row][col];
+    switch (output) {
+        case 0: printf("Output: 0000\n"); break;
+        case 1: printf("Output: 0001\n"); break;
+        case 2: printf("Output: 0010\n"); break;
+        case 3: printf("Output: 0011\n"); break;
+        case 4: printf("Output: 0100\n"); break;
+        case 5: printf("Output: 0101\n"); break;
+        case 6: printf("Output: 0110\n"); break;
+        case 7: printf("Output: 0111\n"); break;
+        case 8: printf("Output: 1000\n"); break;
+        case 9: printf("Output: 1001\n"); break;
+        case 10: printf("Output: 1010\n"); break;
+        case 11: printf("Output: 1011\n"); break;
+        case 12: printf("Output: 1100\n"); break;
+        case 13: printf("Output: 1101\n"); break;
+        case 14: printf("Output: 1110\n"); break;
+        case 15: printf("Output: 1111\n"); break;
+    }
+  
+
+}
+    return 0;
+}
+
+
+-------prime or not-------
+
+#include<stdio.h>
+int main(){
+    int num1, num2, rem,a,b;
+    printf("Input a: ");
+    scanf("%d",&num1);
+    printf("Input b: ");
+    scanf("%d",&num2);
+    a=num1;
+    b=num2;
+    while(rem!=0){
+        rem=num2%num1;
+        num2=num1;
+        num1=rem;
+    }
+    if(num2==1){
+        printf("gcd(%d,%d) \n",a,b);
+         printf("relatively prime=1");
+    }
+    else{
+        printf("gcd(%d,%d) \n",a,b);
+         printf("not relatively prime");
+    }
+}
+
+
+-------additive inverse-----
+#include<stdio.h>
+int main(){
+    int i,j,n,z[100],k=0;
+    printf("Input: ");
+    scanf("%d",&n);
+    printf("z%d \t",n);
+    for(i=0;i<n;i++){
+        printf(" %d ,",i);
+    }
+    for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+            if((i+j)%n==0){
+                z[k]=j;
+                k++;
+            }
+        }
+      
+    }
+    for(i=0;i<k;i++){
+        printf("\nadditive inverse of 7 for  %d = %d ",i,z[i]);
+    }
+}
+
+
+
+-----multiplicative inverse-------
+#include<stdio.h>
+int main(){
+    int q,r1,r2,r,t1=0,t2=1,t,n,temp;
+    printf("N: ");
+    scanf("%d",&n);
+    r1=n;
+    printf("b: ");
+    scanf("%d",&r2);
+    temp=r2;
+    while(r2>0){
+        q=r1/r2;
+        r=r1%r2;
+        r1=r2;
+        r2=r;
+        t=t1-q*t2;
+        t1=t2;
+        t2=t;
+       
+    }
+    printf("Multiplicative inverse of b %d in Z%d=",temp,n);
+    printf("%d",((t1)+n)%n);
+    
+
+}
+
+
+
+
+-----Miller-rabin------
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+int main() {
+    int n, k, q,flag=1;
+    int b,a,i;
+    printf("Enter a number n: ");
+    scanf("%d", &n);
+    k = 0;
+    q = n - 1;
+
+    while (q % 2 == 0) {
+        k++;
+        q = q / 2;
+    }
+    a = rand() % (n - 1) + 1;
+    printf("the values k:%d q:%d  a:%d",k,q,a);
+
+    if(((int)pow(a,q))%n==1)
+        {
+        printf("\nInclusive.");
+        flag=0;
+    }
+    
+if(flag==1)
+{
+    for(i=0;i<k;i++){
+        b=((int)pow(2,i));
+        if(((int)pow(a,(b*q)))%n==(n-1)){
+            printf("\nInclusive");
+            flag=0;
+            break;
+        }
+    }
+}
+        if(flag==1)
+        {
+            printf("\nComposite");
+        }
+
+    return 0;
+}
+
+
+
+
+
+
+-----Eulber totient----=
+#include<stdio.h>
+
+int gcd(int a, int b) {
+    while (b != 0) {
+        int t = b;
+        b = a % b;
+        a = t;
+    }
+    return a;
+}
+
+int main(){
+    int n,count=0;
+    printf("Input n: ");
+    scanf("%d",&n);
+    for(int i=1;i<n;i++){
+        if(gcd(n,i)==1){
+            count++;
+        }
+    }
+    printf("the euler tolent is value is %d ",count);
+}
+
+
+
+-------Primitive root------
+#include<stdio.h>
+#include<math.h>
+
+int main() {
+    int n, a, result[10], i, j;
+    int is_primitive= 1;
+
+    printf("Input (a): ");
+    scanf("%d", &a);
+    printf("input (n): ");
+    scanf("%d", &n);
+
+    for(i = 1; i < n; i++) {
+        result[i] =(int) pow(a, i) % n;
+        printf("%d^%d mod %d = %d\n", a, i, n, result[i]);
+    }
+    for (i = 1; i < n; i++) {
+        for (j = 1; j < i; j++) {
+            if (result[i] == result[j]) {
+                is_primitive= 0;
+                break;
+            }
+        }
+    }
+    for (i = 1; i < n; i++) {
+        int flag = 0;
+        for (j = 1; j < n; j++) {
+            if (result[j] == i) {
+                flag = 1;
+                break;
+            }
+        }
+        if (!flag) {
+            is_primitive= 0;
+            break;
+        }
+    }
+    if (is_primitive) {
+        printf("%d is a primitive root of %d.\n", a, n);
+    } else {
+        printf("%d is NOT a primitive root of %d.\n", a, n);
+    }
+        return 0;
+}
+
+
+RSA code
+
+#include <stdio.h>
+
+int main() {
+    long long p, q, n, ot, e, d, m, c;
+    long long r1, r2, t1, t2, q1, r, t;
+    int i;
+    printf("Enter the  prime number of p: ");
+    scanf("%lld", &p);
+    printf("Enter the another prime number of q: ");
+    scanf("%lld", &q);
+
+    n = p * q;
+    ot = (p - 1) * (q - 1);
+
+
+    do {
+        printf("Enter the value of e (1 < e < %lld) : ", ot, ot);
+        scanf("%lld", &e);
+    } while (e <= 1 || e >= ot);
+
+    r1 = ot;
+    r2 = e;
+    t1 = 0;
+    t2 = 1;
+    while (r2 != 0) {
+        q1 = r1 / r2;
+        r = r1 - r2 * q1;
+        r1 = r2;
+        r2 = r;
+        t = t1 - t2 * q1;
+        t1 = t2;
+        t2 = t;
+    }
+    d = (t1 + ot) % ot;
+
+    printf("Public key {e, n}: {%lld, %lld}\n", e, n);
+    printf("Private key {d, n}: {%lld, %lld}\n", d, n);
+
+
+    printf("Enter the message m to be encrypted: ");
+    scanf("%lld", &m);
+    c = 1;
+    for (i = 0; i < e; i++) {
+        c = (c * m) % n;
+    }
+    printf("Encrypted message c is: %lld\n", c);
+
+    m = 1;
+    for ( i = 0; i < d; i++) {
+        m = (m * c) % n;
+    }
+    printf("Decrypted message m is: %lld\n", m);
+
+    return 0;
+}
+
+
+Diffe hellman
+#include <stdio.h>
+
+int main() {
+    int p, g;
+    int xa, xb;
+    int ya, yb;
+    int k1, k2;
+    int i;
+
+    printf("Enter the value of prime number(P): ");
+    scanf("%d", &p);
+
+
+    printf("Enter the value of g (should be a primitive root modulo P): ");
+    scanf("%d", &g);
+
+
+    printf("Enter the value of xa : ", p);
+    scanf("%d", &xa);
+
+
+    printf("Enter the value of xb : ", p);
+    scanf("%d", &xb);
+
+    ya = 1;
+    for ( i = 0; i < xa; i++) {
+        ya = (ya * g) % p;
+    }
+    printf("Public key for Manish (ya): %d\n", ya);
+
+
+    yb = 1;
+    for (i = 0; i < xb; i++) {
+        yb = (yb * g) % p;
+    }
+    printf("Public key for Abhay (yb): %d\n", yb);
+
+    k1 = 1;
+    for (i = 0; i < xa; i++) {
+        k1 = (k1 * yb) % p;
+    }
+    printf("Shared secret key for Manish (k1): %d\n", k1);
+
+
+    k2 = 1;
+    for ( i = 0; i < xb; i++) {
+        k2 = (k2 * ya) % p;
+    }
+    printf("Shared secret key for Abhay(k2): %d\n", k2);
+    if (k1 == k2) {
+        printf("Keys should be exchanged successfully.\n", k1);
+    } else {
+        printf("Error in key exchange so Keys are not match.\n");
+    }
+
+    return 0;
+}
+
+
+
+
+elagamal
+
+#include <stdio.h>
+#include <stdlib.h>
+
+
+int main() {
+    int p, g;
+    int xa;
+    int ya;
+    int plaintext, ciphertext1, ciphertext2;
+    int k, a, b;
+    int i;
+
+    printf("Enter the value of  prime number(P): ");
+    scanf("%d", &p);
+    printf("Enter the value of g (primitive root modulo %d): ", p);
+    scanf("%d", &g);
+    printf("Enter your private key (less than %d): ", p - 1);
+    scanf("%d", &xa);
+    
+    ya = 1;
+    for ( i = 0; i < xa; i++) {
+        ya = (ya * g) % p;
+    }
+    printf("Your public key (ya): %d\n", ya);
+
+
+    printf("Enter the plaintext to encrypt (less than %d): ", p);
+    scanf("%d", &plaintext);
+    printf("Enter the value of k:\n");
+    scanf("%d", &k);
+
+    ciphertext1 = 1;
+    for (i = 0; i < k; i++) {
+        ciphertext1 = (ciphertext1 * g) % p;
+    }
+
+
+    a = 1;
+    for ( i = 0; i < k; i++) {
+        a = (a * ya) % p;
+    }
+
+    b = (plaintext * a) % p;
+
+    ciphertext2 = b; // c2 = b
+
+    printf("Encrypted ciphertext: (%d, %d)\n", ciphertext1, ciphertext2);
+
+
+    int inverse_a = 1;
+    for (i = 1; i < p; i++) {
+        if ((a * i) % p == 1) {
+            inverse_a = i;
+            break;
+        }
+    }
+
+
+    int decrypted_plaintext = (ciphertext2 * inverse_a) % p;
+
+    printf("Decrypted plaintext: %d\n", decrypted_plaintext);
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
